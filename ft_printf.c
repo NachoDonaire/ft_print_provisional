@@ -2,12 +2,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
-
-typedef struct s_sc
-{
-  int   len;
-  int   width;
-}t_sc;
+#include "printf_lib.h"
 
 t_sc    *ft_initialise_tab(t_sc *tab)
 {
@@ -16,72 +11,32 @@ t_sc    *ft_initialise_tab(t_sc *tab)
   return (tab);
 }
 
-void    ft_print_char(va_list arg, t_sc *tab)
-{
-  char a;
-  int y;
-  char z;
-
-  z = '0';
-  if (tab -> width == 1)
-  {
-    y = va_arg(arg, int);
-    while (y > 0)
-    {
-      write(1, &z, 1);
-      y--;
-    }
-  }
-  a = va_arg(arg, int);
-  write(1, &a, 1);
-}
-
-void    ft_print_nb(int i)
-{
-  int y;
-
-  y = i;
-  if (y < 0)
-  {
-    y = y * (-1);
-    write(1, "-", 3);
-  }
-  if (y > 9)
-  {
-    ft_print_nb(y / 10);
-    ft_print_nb(y % 10);
-  }
-  else if (y <= 9)
-  {
-    y = y + 48;
-    write(1, &y, 1);
-    y = y - 48;
-  }
-}
-
- 
 int ft_eval_format(const char *s, int i, va_list arg, t_sc *tab)
 {
   if (s[i] == 'c')
     ft_print_char(arg, tab);
   else if (s[i] == 'd')
+  {
     ft_print_nb(va_arg(arg, int));
+  }
   i++;
   return (i);
 }
 
+void    ft_flags(t_sc *tab, va_list dest, va_list arg)
+{
+  if (tab -> width == 1)
+    ft_aply_width(dest, arg);
+}
+
 int ft_eval_next(const char *s, int i, t_sc *tab)
 {
-  int y;
-  y = i;
   while (s[i] != 'c' && s[i] != 'd')
   {
     if (s[i] == '*')
       tab -> width = 1;
     i++;
   }
-  if (y == i)
-    return (i);
   return (i);
 }
 
@@ -90,7 +45,9 @@ int ft_printf(const char *s, ...)
 {
   t_sc *tab;
   va_list arg;
+  va_list dest;
   va_start(arg, s);
+  va_copy(dest, arg);
   int i;
 
   i = 0;
@@ -103,8 +60,10 @@ int ft_printf(const char *s, ...)
     if (s[i] == '%')
     {
       i = ft_eval_next(s, i + 1, tab);
+      ft_flags(tab, dest, arg);
       i = ft_eval_format(s, i, arg, tab);
     }
+    tab = ft_initialise_tab(tab);
     if (s[i])
     {
       write(1, &s[i], 1);
@@ -119,6 +78,10 @@ int main()
 {
   char a = 'x';
  int d = 242;
- ft_printf("hola: %d\n chr: %c",d, a);
+ int x = 23;
+ ft_printf("nb: %*d\nchr: %c\notro_nb: %*d\n",5,d, a,5, x);
+ printf("nb: %*d\nchr: %c\notro_nb: %*d\n",5,d, a,5, x);
+
+
   return (0);
 }
