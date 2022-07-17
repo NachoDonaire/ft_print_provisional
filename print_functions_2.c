@@ -31,7 +31,7 @@ void	ft_print_hexa_p(unsigned int long i)
 		ft_print_hexa_p(i / 16);
 		ft_print_hexa_p(i % 16);
 	}
-	else if (i >= 0 && i <= 15)
+	else if (i <= 15)
 	{
 		if (i >= 10 && i <= 15)
 		{

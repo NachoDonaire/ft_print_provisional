@@ -67,7 +67,7 @@ void	ft_print_hexa(unsigned int i)
 		ft_print_hexa(i / 16);
 		ft_print_hexa(i % 16);
 	}
-	else if (i >= 0 && i <= 15)
+	else if (i <= 15)
 	{
 		if (i >= 10 && i <= 15)
 		{
@@ -91,7 +91,7 @@ void	ft_print_hexa_x(unsigned int i)
 		ft_print_hexa_x(i / 16);
 		ft_print_hexa_x(i % 16);
 	}
-	else if (i >= 0 && i <= 15)
+	else if (i <= 15)
 	{
 		if (i >= 10 && i <= 15)
 		{

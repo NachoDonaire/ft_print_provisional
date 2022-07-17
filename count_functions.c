@@ -18,6 +18,8 @@ int	ft_print_char_c(va_list arg, int count)
 
 	a = va_arg(arg, int);
 	count++;
+	if (!a)
+		return (count);
 	return (count);
 }
 

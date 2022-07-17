@@ -15,5 +15,5 @@ clean:
 	${RM} ${OBJS}
 fclean:
 	${RM} ${NAME}
-re:	fclean all
+re:	fclean all clean
 .PHONY: all clean fclean re
